@@ -92,7 +92,7 @@ export const placeOrderStripe = async (req, res) => {
       items,
       amount,
       address,
-      paymentType: "COD",
+      paymentType: "Online",
     });
 
     // stripe gateway initalize
