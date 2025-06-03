@@ -38,7 +38,7 @@ const SellerLayout = () => {
                 </div>
               </NavLink>
         <div className="flex items-center gap-5 text-gray-600">
-          <p className="font-medium">Hi! Admin</p>
+          <p className="hidden md:font-medium">Hi! Admin</p>
           <button
             onClick={logout}
             className="border rounded-full text-sm px-4 py-1 hover:bg-gray-100 transition"
@@ -51,7 +51,7 @@ const SellerLayout = () => {
       {/* Layout Body */}
       <div className="flex">
         {/* Sidebar */}
-        <div className="md:w-64 w-16 border-r h-[95vh] border-gray-300 pt-4 flex flex-col">
+        <div className="md:w-64 min-w-16 border-r h-[95vh] border-gray-300 pt-4 flex flex-col">
           {sidebarLinks.map((item) => (
             <NavLink
               to={item.path}
