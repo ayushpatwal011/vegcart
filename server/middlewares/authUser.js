@@ -6,7 +6,7 @@ const authUser = async (req, res , next) => {
   if(!token){
     return res.json({
       success : false,
-      message: "Not Authorized"
+      message: "Please Login"
     })
   }
   try {
@@ -17,7 +17,7 @@ const authUser = async (req, res , next) => {
     }else{
           return res.json({
       success : false,
-      message: "Not Authorized"
+      message: "Please Login"
     })
       }
       next()
