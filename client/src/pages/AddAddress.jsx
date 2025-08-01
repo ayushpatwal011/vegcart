@@ -45,6 +45,7 @@ const AddAddress = () => {
       
       const { data } = await axios.post("/api/address/add", {
         address,
+        userId: user._id, 
       });
       
       if (data.success) {
