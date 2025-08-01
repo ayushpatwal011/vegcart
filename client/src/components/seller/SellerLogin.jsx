@@ -4,8 +4,8 @@ import toast from 'react-hot-toast'
 
 const SellerLogin = () => {
   const { isSeller, setIsSeller, navigate, axios } = useAppContext()
-  const [email, setEmail] = useState("admin@example.com")
-  const [password, setPassword] = useState("1234")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
   useEffect(() => {
     if (isSeller) {
@@ -42,7 +42,7 @@ const SellerLogin = () => {
           <label className="block mb-1 font-medium">Email</label>
           <input
             type="email"
-            placeholder="Enter your email"
+            placeholder="You can't access admin dashboard"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
@@ -54,7 +54,7 @@ const SellerLogin = () => {
           <label className="block mb-1 font-medium">Password</label>
           <input
             type="password"
-            placeholder="Enter your password"
+            placeholder="Enter admin password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
