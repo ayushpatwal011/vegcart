@@ -114,7 +114,7 @@ export const login = async (req, res) => {
     console.error(error.message);
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "User not exist",
     });
   }
 };
