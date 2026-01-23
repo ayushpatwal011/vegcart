@@ -3,7 +3,7 @@ import { assets } from "../assets/assets";
 import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 
-// input feild component
+// Input field component
 const InputFeild = ({ type, placeholder, name, handleChange, address }) => {
   return (
     <input
@@ -17,6 +17,7 @@ const InputFeild = ({ type, placeholder, name, handleChange, address }) => {
     />
   );
 };
+
 const AddAddress = () => {
   const { axios, navigate, user } = useAppContext();
 
@@ -34,36 +35,57 @@ const AddAddress = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setAddress((preAddress) => ({
-      ...preAddress,
+    setAddress((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
+
   const onSubmitHandler = async (e) => {
+    e.preventDefault();
+
+    // 🔥 IMPORTANT GUARD (fixes 400 error)
+    if (!user || !user._id) {
+      toast.error("Please login first");
+      return;
+    }
+
     try {
-      e.preventDefault();
-      
-      const { data } = await axios.post("/api/address/add", {
+      const payload = {
+        userId: user._id,
         address,
-        userId: user._id, 
-      });
-      
+      };
+
+      console.log("Sending payload:", payload);
+
+      const { data } = await axios.post(
+        "/api/address/add",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       if (data.success) {
-       toast.success("Address saved successfully!");
+        toast.success("Address saved successfully!");
         navigate("/cart");
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(
+        error.response?.data?.message || "Something went wrong"
+      );
     }
   };
 
   useEffect(() => {
     if (!user) {
-      navigate("/cart")
+      navigate("/cart");
     }
-  } , [user])
+  }, [user, navigate]);
 
   return (
     <div className="mt-16 pb-16">
@@ -71,6 +93,7 @@ const AddAddress = () => {
         Add Shipping
         <span className="font-semibold text-primary"> Address</span>
       </p>
+
       <div className="flex flex-col-reverse md:flex-row justify-between mt-10">
         <div className="flex-1 max-w-md">
           <form onSubmit={onSubmitHandler} className="space-y-3 mt-6 text-sm">
@@ -82,7 +105,6 @@ const AddAddress = () => {
                 type="text"
                 placeholder="First Name"
               />
-
               <InputFeild
                 handleChange={handleChange}
                 address={address}
@@ -91,13 +113,15 @@ const AddAddress = () => {
                 placeholder="Last Name"
               />
             </div>
+
             <InputFeild
               handleChange={handleChange}
               address={address}
               name="email"
-              type="text"
+              type="email"
               placeholder="Email Address"
             />
+
             <InputFeild
               handleChange={handleChange}
               address={address}
@@ -105,6 +129,7 @@ const AddAddress = () => {
               type="text"
               placeholder="Street"
             />
+
             <div className="flex gap-3">
               <InputFeild
                 handleChange={handleChange}
@@ -138,6 +163,7 @@ const AddAddress = () => {
                 placeholder="Country"
               />
             </div>
+
             <InputFeild
               handleChange={handleChange}
               address={address}
@@ -147,13 +173,20 @@ const AddAddress = () => {
             />
 
             <button
-              onClick={() => {}}
-              className="w-full py-3 mt-6 cursor-pointer bg-primary text-white font-medium hover:bg-primary-dull transition uppercase"
+              type="submit"
+              disabled={!user}
+              className={`w-full py-3 mt-6 font-medium uppercase transition
+                ${
+                  !user
+                    ? "bg-gray-400 cursor-not-allowed text-white"
+                    : "bg-primary hover:bg-primary-dull text-white"
+                }`}
             >
               Save Address
             </button>
           </form>
         </div>
+
         <img src={assets.add_address_iamge} alt="add_address" />
       </div>
     </div>
