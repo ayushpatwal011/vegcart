@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useAppContext } from "../../context/AppContext";
 
 const Chatbot = () => {
+  const { axios }  = useAppContext()
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     { role: "assistant", content: "Hi! How can I help you today? 😊" }
@@ -18,17 +20,16 @@ const Chatbot = () => {
   setLoading(true);
 
   try {
-    const response = await fetch("http://localhost:4000/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: newMessages })
-    });
+     const { data } = await axios.post("/api/ai", {
+    messages: newMessages
+  });
 
-    const data = await response.json();
-
-    // Add bot reply to chat
-    setMessages([...newMessages, { role: "assistant", content: data.reply }]);
-
+  console.log(data);
+  
+  if (data) {
+    const botMessage = { role: "assistant", content: data.reply };
+    setMessages(prev => [...prev, botMessage]);
+  }
   } catch (error) {
     setMessages([...newMessages, { role: "assistant", content: "Sorry, something went wrong. Please try again!" }]);
   } finally {

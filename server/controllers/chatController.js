@@ -1,6 +1,7 @@
 import { OpenAI } from "openai/client.js";
 import { productList } from "./productController.js";
 import Product from "../models/Product.js";
+import { getChatResponse } from "../config/openai.js";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -55,16 +56,14 @@ RULES:
 Answer general questions politely and friendly in single line only.
 If user asks about products, prices or availability, let them know they can ask you directly.`;
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
+
+    const message = [
         { role: "system", content: systemPrompt },
         ...messages
-      ],
-      max_tokens: 500
-    });
+      ]
+    const response = await getChatResponse(message);
 
-    res.json({ reply: response.choices[0].message.content });
+    res.json({ reply: response });
 
   } catch (error) {
     console.error("Chatbot error:", error);

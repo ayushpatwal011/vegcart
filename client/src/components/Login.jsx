@@ -27,7 +27,6 @@ const Login = () => {
         } catch (error) {
              toast.error(error.message)
         }
-        
     }
 
     return (
@@ -40,7 +39,7 @@ const Login = () => {
             <p className="text-2xl font-medium m-auto">
                 <span className="text-primary">VegCart</span> {state === "login" ? "Login" : "Sign Up"}
             </p>
-            {state === "register" && (
+            {state === "signup" && (
                 <div className="w-full">
                     <p>Name</p>
                     <input onChange={(e) => setName(e.target.value)} value={name} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="text" required />

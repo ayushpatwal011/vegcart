@@ -19,6 +19,7 @@ import ProductList from './pages/seller/ProductList'
 import Orders from './pages/seller/Orders'
 import Loading from './components/Loading'
 import Chatbot from './components/Chatbot/Chatbot'
+import LoginChatbot from "./components/Chatbot/LoginChatbot"
 
 
 const App = () => {
@@ -33,7 +34,7 @@ const App = () => {
       <Navbar />
       }
       {
-        showUserLogin ? <Login /> : null
+        showUserLogin ? <LoginChatbot/> : null
       }
       <Toaster />
       <div className={`${isSellerPath ? "" : "px-6 md:px-16 lg:px-24 xl:px-32"}`}>
